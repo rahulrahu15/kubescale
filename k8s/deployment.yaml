@@ -15,7 +15,7 @@ spec:
         app: kubescale
     spec:
       containers:
-        - name: kubescale
+        - name: kubescale-container
           image: 593814964617.dkr.ecr.ap-south-1.amazonaws.com/kubescale:latest
           ports:
             - containerPort: 80
@@ -25,10 +25,10 @@ kind: Service
 metadata:
   name: kubescale-service
 spec:
+  type: LoadBalancer
   selector:
     app: kubescale
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: LoadBalancer
