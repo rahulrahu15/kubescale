@@ -121,16 +121,32 @@ kubectl apply -f ../service.yaml
   SSLip.io URL: http://<external-ip>.sslip.io example http://13.205.112.107.sslip.io
 
 
-### *CI/CD Pipeline*
-The GitHub Actions workflow deploy.yml:
-Checkout code
-Configure AWS credentials
-Login to Amazon ECR
-Build Docker images
-Push images to ECR
-Update Kubernetes manifests
-Apply manifests to EKS cluster
-Workflow file: .github/workflows/deploy.yml
+
+---
+
+## CI/CD Pipeline
+
+1. Push to `main` branch triggers GitHub Actions  
+2. Action builds Docker image for the app  
+3. Pushes image to AWS ECR  
+4. Updates Kubernetes manifests with new image  
+5. Applies manifests to EKS cluster (blue-green deployment)  
+
+---
+
+## Monitoring & Observability
+
+- **Prometheus**: Collects metrics from pods  
+- **Grafana**: Dashboards visualize CPU, memory, request stats  
+- Access Grafana via port-forward or LoadBalancer  
+
+---
+
+## Accessing the App
+
+- Public access via LoadBalancer + `sslip.io` domain  
+- Example: `http://nginx.<your-public-ip>.sslip.io`  
+- Zero downtime thanks to blue-green deployment
 
 ### *Outcome*
 
