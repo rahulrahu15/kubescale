@@ -1,4 +1,4 @@
-name: KubeScale CI/CD Blue/Green
+name: KubeScale CI/CD
 
 on:
   push:
@@ -30,24 +30,12 @@ jobs:
           docker build -t $IMAGE_URI ./k8s/html
           docker push $IMAGE_URI
 
-      - name: Deploy green version
+      - name: Update Kubernetes deployment image
         run: |
-          GREEN_DEPLOYMENT=nginx-green
-          IMAGE_URI=593814964617.dkr.ecr.ap-south-1.amazonaws.com/kubescale:latest
-          # Update deployment.yaml for green version
-          sed -i "s|image: .*|image: $IMAGE_URI|" ./k8s/deployment.yaml
+          sed -i "s|image: .*|image: 593814964617.dkr.ecr.ap-south-1.amazonaws.com/kubescale:latest|" ./k8s/deployment.yaml
+
+      - name: Apply Kubernetes manifests
+        run: |
+          aws eks update-kubeconfig --region ap-south-1 --name kubescale-cluster
           kubectl apply -f ./k8s/deployment.yaml
-
-      - name: Wait for green pods to be ready
-        run: |
-          GREEN_DEPLOYMENT=nginx-green
-          kubectl rollout status deployment/$GREEN_DEPLOYMENT --timeout=120s
-
-      - name: Switch Service to green
-        run: |
-          # Update Service selector to point to green version
-          kubectl patch svc nginx -p '{"spec":{"selector":{"app":"nginx","version":"green"}}}'
-
-      - name: Optional: Cleanup old blue pods
-        run: |
-          kubectl delete deployment nginx-blue || true
+          kubectl apply -f ./k8s/service.yaml
