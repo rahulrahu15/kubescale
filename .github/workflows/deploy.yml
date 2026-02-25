@@ -27,12 +27,12 @@ jobs:
       - name: Build Docker image
         run: |
           IMAGE_URI=593814964617.dkr.ecr.ap-south-1.amazonaws.com/kubescale:latest
-          docker build -t $IMAGE_URI ./app
+          docker build -t $IMAGE_URI ./k8s/html
           docker push $IMAGE_URI
 
       - name: Update Kubernetes manifests with new image
         run: |
-          sed -i "s|image: .*|image: 593814964617.dkr.ecr.ap-south-1.amazonaws.com/kubescale:latest|" ./k8s/deployment.yaml
+          sed -i "s|image: .*|image: 593814964617.dkr.ecr.ap-south-1.amazonaws.com/kubescale:latest|" ./k8s/nginx-blue.yaml
 
       - name: Apply Kubernetes manifests
         run: |
