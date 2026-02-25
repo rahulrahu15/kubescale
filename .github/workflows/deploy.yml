@@ -32,7 +32,7 @@ jobs:
 
       - name: Update Kubernetes deployment image
         run: |
-          sed -i "s|image: .*|image: 593814964617.dkr.ecr.ap-south-1.amazonaws.com/kubescale:latest|" ./k8s/deployment.yaml
+          sed -i "s|image: .*|image: ***.dkr.ecr.ap-south-1.amazonaws.com/kubescale:latest|" ./k8s/deployment.yaml
 
       - name: Apply Kubernetes manifests
         run: |
