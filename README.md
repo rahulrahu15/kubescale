@@ -121,7 +121,7 @@ kubectl apply -f ../service.yaml
   SSLip.io URL: http://<external-ip>.sslip.io example http://13.205.112.107.sslip.io
 
 
-### CI/CD Pipeline
+### *CI/CD Pipeline*
 The GitHub Actions workflow deploy.yml:
 Checkout code
 Configure AWS credentials
@@ -132,7 +132,7 @@ Update Kubernetes manifests
 Apply manifests to EKS cluster
 Workflow file: .github/workflows/deploy.yml
 
-### Outcome
+### *Outcome*
 
 Fully automated Kubernetes deployment
 Blue-green deployment with zero downtime
