@@ -21,18 +21,17 @@ jobs:
           aws-region: ap-south-1
 
       - name: Login to Amazon ECR
-        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build Docker image
+      - name: Build and push Docker image
         run: |
           IMAGE_URI=593814964617.dkr.ecr.ap-south-1.amazonaws.com/kubescale:latest
           docker build -t $IMAGE_URI ./k8s/html
           docker push $IMAGE_URI
 
-      - name: Update Kubernetes deployment image
+      - name: Update deployment YAML with new image
         run: |
-          sed -i "s|image: .*|image: ***.dkr.ecr.ap-south-1.amazonaws.com/kubescale:latest|" ./k8s/deployment.yaml
+          sed -i "s|image: .*|image: 593814964617.dkr.ecr.ap-south-1.amazonaws.com/kubescale:latest|" ./k8s/deployment.yaml
 
       - name: Apply Kubernetes manifests
         run: |
